@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
+
 
 const UserRoutes = require("./routes/UserRoutes");
 const PetRoutes = require("./routes/PetRoutes");
@@ -13,7 +15,7 @@ app.use(express.json());
 app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
 
 // Public folder for images
-app.use(express.static("public"));
+app.use(express.static("src/public"));
 
 // Routes
 app.use("/users", UserRoutes);

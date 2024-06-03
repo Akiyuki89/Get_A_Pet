@@ -8,9 +8,11 @@ import styles from "./Profile.module.css";
 import Input from "../../form/Input";
 
 import useFlashMessage from "../../../hooks/useFlashMessage";
+import RoundedImage from "../../layout/RoundedImage";
 
 const Profile = () => {
   const [user, setUser] = useState({});
+  const [preview, setPreview] = useState();
   const [token] = useState(localStorage.getItem("token") || "");
   const { setFlashMessage } = useFlashMessage();
 
@@ -27,6 +29,7 @@ const Profile = () => {
   }, [token]);
 
   function onFileChange(e) {
+    setPreview(e.target.files[0]);
     setUser({ ...user, [e.target.name]: e.target.files[0] });
   }
 
@@ -65,7 +68,18 @@ const Profile = () => {
     <section>
       <div className={styles.profile_container}>
         <h1>Perfil</h1>
-        <p>Preview Imagem</p>
+        {(user.image || preview) && (
+          <RoundedImage
+            src={
+              preview
+                ? URL.createObjectURL(preview)
+                : `${import.meta.env.VITE_REACT_APP_API}/images/users/${
+                    user.image
+                  }`
+            }
+            alt={user.name}
+          />
+        )}
       </div>
       <form onSubmit={handleSubmit} className={formStyles.form_container}>
         <Input
